@@ -1,37 +1,33 @@
 import { model, Schema } from "mongoose";
 
+const isDonor = function (this: any) {
+  return this.role === "donor";
+};
+
 const UserSchema = new Schema(
   {
     _id: Schema.Types.ObjectId,
     firstName: {
       type: String,
-      required: function () {
-        return this.role === "donor";
-      },
+      required: isDonor,
     },
     lastName: {
       type: String,
-      required: function () {
-        return this.role === "donor";
-      },
+      required: isDonor,
     },
     otherNames: {
       type: String,
-      required: function () {
-        return this.role === "donor";
-      },
+      required: isDonor,
     },
     organizationName: {
       type: String,
-      required: function () {
-        return this.role === "organization";
-      },
+      required: isDonor,
     },
     email: {
       type: String,
       required: true,
     },
-    phoneNumber: {
+    phone: {
       type: String,
       required: true,
     },
@@ -50,9 +46,7 @@ const UserSchema = new Schema(
     },
     dob: {
       type: Date,
-      required: function () {
-        return this.role === "donor";
-      },
+      required: isDonor,
     },
     status: {
       type: String,

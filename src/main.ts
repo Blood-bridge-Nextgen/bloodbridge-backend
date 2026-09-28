@@ -1,25 +1,48 @@
 import { NestFactory } from "@nestjs/core";
+import { NestExpressApplication } from "@nestjs/platform-express";
+import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import * as dotenv from "dotenv";
 import mongoose from "mongoose";
+import { join } from "path";
 import { AppModule } from "./app.module";
+import { initializeMongooseConnection } from "./mongoose/db";
 
 dotenv.config();
 
-async function initializeMongooseConnection() {
-  const uri = process.env.MONGO_DB_URI;
-
-  if (!uri) {
-    throw new Error("Cannot connect to MongoDB");
-  }
-
-  await mongoose.connect(uri);
-
-  console.log(`Connected to MongoDB database`);
-}
-
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   await initializeMongooseConnection();
+
+  app.useStaticAssets(join(process.cwd(), "uploads"), { prefix: "/uploads/" });
+  app.enableCors({
+    origin: process.env.CORS_ORIGINS?.split(",") || [],
+    methods: ["*"],
+    credentials: true,
+  });
+
+  const config = new DocumentBuilder()
+    .setTitle("BloodBridge API")
+    .setDescription(
+      "BloodBridge helps verified donors, hospitals, and blood banks respond to critical blood needs quickly, safely, and efficiently. Our direct coordination pipeline reduces delays in medical emergencies.",
+    )
+    .setVersion("1.0")
+    .addBearerAuth(
+      {
+        type: "http",
+        scheme: "bearer",
+        bearerFormat: "JWT",
+        in: "header",
+        name: "Authorization",
+      },
+      "JWT",
+    )
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup("docs", app, document, {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+  });
   await app.listen(process.env.PORT ?? 3000);
 }
 void bootstrap();
