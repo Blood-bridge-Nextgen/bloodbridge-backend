@@ -12,6 +12,10 @@ export type HttpResponse<T = any> = {
   message: string;
 };
 
+export enum MONGOOSE_ERROR_CODES {
+  DUPLICATE_KEY = 11000,
+}
+
 export const httpResponse = ({
   code = HttpStatus.OK,
   data = null,

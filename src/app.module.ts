@@ -5,6 +5,7 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { AuthModule } from "./auth/auth.module";
 import { THROTTLE_LIMIT, THROTTLE_TTL } from "./lib/constants";
+import { MailService } from './mail/mail.service';
 
 @Module({
   imports: [
@@ -24,6 +25,6 @@ import { THROTTLE_LIMIT, THROTTLE_TTL } from "./lib/constants";
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, MailService],
 })
 export class AppModule {}

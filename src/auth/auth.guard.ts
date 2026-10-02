@@ -3,6 +3,8 @@ import {
   ExecutionContext,
   ForbiddenException,
   Injectable,
+  mixin,
+  Type,
   UnauthorizedException,
 } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
@@ -93,4 +95,64 @@ export class AuthGuard implements CanActivate {
       token = token.slice(7).trim();
     return token || undefined;
   }
+}
+
+export function RoleGuard(
+  role: "donor" | "facility" | "admin",
+): Type<CanActivate> {
+  @Injectable()
+  class RoleGuardMixin implements CanActivate {
+    constructor() {}
+
+    async canActivate(context: ExecutionContext): Promise<boolean> {
+      const request = context.switchToHttp().getRequest();
+      const user = request.user;
+
+      if (!user) {
+        return false;
+      }
+
+      return user.role === role;
+    }
+  }
+
+  return mixin(RoleGuardMixin);
+}
+
+export function VerificationGuard(): Type<CanActivate> {
+  @Injectable()
+  class RoleGuardMixin implements CanActivate {
+    constructor() {}
+
+    async canActivate(context: ExecutionContext): Promise<boolean> {
+      const request = context.switchToHttp().getRequest();
+      const user = request.user;
+
+      return !!user.emailVerifiedAt;
+    }
+  }
+
+  return mixin(RoleGuardMixin);
+}
+
+export function StatusGuard(
+  status: "pending" | "active" | "suspended",
+): Type<CanActivate> {
+  @Injectable()
+  class RoleGuardMixin implements CanActivate {
+    constructor() {}
+
+    async canActivate(context: ExecutionContext): Promise<boolean> {
+      const request = context.switchToHttp().getRequest();
+      const user = request.user;
+
+      if (!user) {
+        return false;
+      }
+
+      return user.status === status;
+    }
+  }
+
+  return mixin(RoleGuardMixin);
 }

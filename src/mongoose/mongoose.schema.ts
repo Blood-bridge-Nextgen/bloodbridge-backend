@@ -3,10 +3,12 @@ import { model, Schema } from "mongoose";
 const isDonor = function (this: any) {
   return this.role === "donor";
 };
+const isFacility = function (this: any) {
+  return this.role === "facility";
+};
 
 const UserSchema = new Schema(
   {
-    _id: Schema.Types.ObjectId,
     firstName: {
       type: String,
       required: isDonor,
@@ -17,15 +19,19 @@ const UserSchema = new Schema(
     },
     otherNames: {
       type: String,
-      required: isDonor,
     },
     organizationName: {
       type: String,
-      required: isDonor,
+      required: isFacility,
     },
     email: {
       type: String,
       required: true,
+      unique: true,
+    },
+    emailVerifiedAt: {
+      type: Date,
+      default: null,
     },
     phone: {
       type: String,
@@ -84,7 +90,6 @@ UserSchema.virtual("facilityDetails", {
 
 const DonorDetailsSchema = new Schema(
   {
-    _id: Schema.Types.ObjectId,
     bloodGroup: {
       type: String,
       enum: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
@@ -107,15 +112,8 @@ const DonorDetailsSchema = new Schema(
   },
 );
 
-DonorDetailsSchema.virtual("user", {
-  ref: "User",
-  localField: "_id",
-  foreignField: "donorDetails",
-});
-
 const FacilityDetailsSchema = new Schema(
   {
-    _id: Schema.Types.ObjectId,
     registrationNumber: {
       type: String,
       required: true,
@@ -134,7 +132,6 @@ const FacilityDetailsSchema = new Schema(
 
 const KycVerificationSchema = new Schema(
   {
-    _id: Schema.Types.ObjectId,
     status: {
       type: String,
       enum: ["pending", "verified", "rejected"],
@@ -158,7 +155,6 @@ const KycVerificationSchema = new Schema(
 
 const OneTimePasswordSchema = new Schema(
   {
-    _id: Schema.Types.ObjectId,
     code: {
       type: String,
       required: true,

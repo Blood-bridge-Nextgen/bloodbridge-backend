@@ -38,6 +38,9 @@ importers:
       dotenv:
         specifier: ^18.0.4
         version: 18.0.4
+      handlebars:
+        specifier: ^4.7.9
+        version: 4.7.9
       mongoose:
         specifier: ^9.10.2
         version: 9.10.2

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .header {
+      background-color: #0060EB;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      border-radius: 8px 8px 0 0;
+    }
+    .content {
+      padding: 20px;
+      background-color: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 0 0 8px 8px;
+    }
+    .button {
+      display: inline-block;
+      background-color: #0060EB;
+      color: #ffffff !important;
+      text-decoration: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-weight: bold;
+      margin: 16px 0;
+    }
+    .footer {
+      margin-top: 20px;
+      color: #6b7280;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    {{#if (eq otp.type 'email_verification')}}
+    <h1>VERIFY YOUR EMAIL</h1>
+    {{else}}
+      <h1>RESET YOUR PASSWORD</h1>
+    {{/if}}
+  </div>
+  <div class="content">
+    <p>Hi {{otp.user.firstName}},</p>
+
+    <h2 style="text-align: center">
+      {{otp.code}}
+    </h2>
+    <p>
+      <b>NOTE: </b>This code expires after 30 minutes. Do not share this code with anyone
+    </p>
+
+    <p>If you did not expect this invitation or need assistance, please <a style="text-decoration: underline;" href="mailto:support@bloodbridge.com">contact the BloodBridge support team</a>.</p>
+  </div>
+  <div class="footer">
+    Welcome to the BloodBridge<br>
+    <b>BloodBridge Administration</b>
+  </div>
+</div>
+</body>
+</html>
