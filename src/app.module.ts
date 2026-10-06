@@ -6,6 +6,7 @@ import { AppService } from "./app.service";
 import { AuthModule } from "./auth/auth.module";
 import { THROTTLE_LIMIT, THROTTLE_TTL } from "./lib/constants";
 import { MailService } from './mail/mail.service';
+import { DonationModule } from './donation/donation.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { MailService } from './mail/mail.service';
       envFilePath: ".env",
     }),
     AuthModule,
+    DonationModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailService],

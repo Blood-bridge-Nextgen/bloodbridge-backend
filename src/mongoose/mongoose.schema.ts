@@ -176,8 +176,46 @@ const OneTimePasswordSchema = new Schema(
   },
 );
 
+const DonationListingSchema = new Schema(
+  {
+    bloodGroup: {
+      type: String,
+      enum: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
+      required: true,
+    },
+    quantity: {
+      type: Number,
+      required: true,
+    },
+    pricePerPint: {
+      type: Number,
+      required: function (this: any) {
+        return this.type === "paid";
+      },
+      default: 0,
+    },
+    requiredDonors: {
+      type: Number,
+      required: true,
+    },
+    type: {
+      type: String,
+      enum: ["voluntary", "paid"],
+    },
+    facility: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+  },
+);
+
 export const FacilityDetails = model("FacilityDetails", FacilityDetailsSchema);
 export const OneTimePassword = model("OneTimePassword", OneTimePasswordSchema);
 export const User = model("User", UserSchema);
 export const DonorDetails = model("DonorDetails", DonorDetailsSchema);
 export const KycVerification = model("KycVerification", KycVerificationSchema);
+export const DonationListing = model("DonationListing", DonationListingSchema);
