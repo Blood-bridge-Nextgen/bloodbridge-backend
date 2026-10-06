@@ -6,6 +6,8 @@ import { AuthGuard } from "./auth.guard";
 import {
   DonorSignUpSchema,
   type DonorSignUpSchemaType,
+  FacilitySignUpSchema,
+  type FacilitySignUpSchemaType,
   ResetPasswordSchema,
   type ResetPasswordSchemaType,
   SendPasswordResetSchema,
@@ -86,6 +88,56 @@ export class AuthController {
     body: DonorSignUpSchemaType,
   ) {
     return await this.authService.donorSignUp(body);
+  }
+
+  @Post("facility/sign-up")
+  @ApiBody({
+    schema: {
+      type: "object",
+      properties: {
+        organizationName: { type: "string", example: "Organization Name" },
+        registrationNumber: { type: "string", example: "Registration Number" },
+        email: {
+          type: "string",
+          format: "email",
+          example: "newuser@localhost.com",
+        },
+        phone: { type: "string", example: "00000000000" },
+        address: { type: "string", example: "123 Main Street" },
+        password: { type: "string", format: "password", example: "password" },
+        confirmPassword: {
+          type: "string",
+          format: "password",
+          example: "password",
+        },
+      },
+    },
+  })
+  @ApiOkResponse({
+    example: {
+      code: 200,
+      data: {
+        token:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YWJlODk4MjA3NTU5YzM4MzI5MjQ3NmUiLCJyb2xlIjoiZG9ub3IiLCJpYXQiOjE3OTA4NzE5MzgsImV4cCI6MTc5MTQ3NjczOH0.Ncua8HEfLrkeFeqFFQFLBD5UQrZk-7LROCi0S6RjEcY",
+        profile: {
+          _id: "6abe898207559c383292476e",
+          email: "newuser@localhost.com",
+          organizationName: "Organization Name",
+          address: "123 Main Street",
+          role: "facility",
+          displayName: "Organization Name",
+          status: "active",
+          kyc: [],
+        },
+      },
+      message: "User created successfully",
+    },
+  })
+  async facilitySignUp(
+    @Body(new ZodValidationPipe(FacilitySignUpSchema))
+    body: FacilitySignUpSchemaType,
+  ) {
+    return await this.authService.facilitySignUp(body);
   }
 
   @Post("sign-in")

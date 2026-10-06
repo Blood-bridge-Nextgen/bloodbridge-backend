@@ -11,12 +11,14 @@ import { httpResponse, MONGOOSE_ERROR_CODES } from "../lib/utils";
 import { MailService } from "../mail/mail.service";
 import {
   DonorDetails,
+  FacilityDetails,
   OneTimePassword,
   User,
 } from "../mongoose/mongoose.schema";
 import { ProfileResource } from "./auth.resource";
 import {
   DonorSignUpSchemaType,
+  FacilitySignUpSchemaType,
   ResetPasswordSchemaType,
   SendPasswordResetSchemaType,
   SignInSchemaType,
@@ -31,6 +33,67 @@ export class AuthService {
     private jwt: JwtService,
     private mail: MailService,
   ) {}
+
+  async facilitySignUp(body: FacilitySignUpSchemaType) {
+    try {
+      const user = new User({
+        email: body.email,
+        phone: body.phone,
+        organizationName: body.organizationName,
+        address: body.address,
+        hash: this.hashPassword(body.password),
+        role: "facility",
+      });
+      await user.save();
+
+      await FacilityDetails.create({
+        registrationNumber: body.registrationNumber,
+        user: user._id,
+      });
+
+      const otp = new OneTimePassword({
+        user: user._id,
+        code: this.generateOTP(),
+        type: "email_verification",
+      });
+      await otp.save();
+
+      //   Send otp
+
+      const token = this.jwt.sign(
+        { userId: user._id, role: user.role },
+        {
+          expiresIn: "7d",
+          secret: process.env.JWT_SECRET || "",
+        },
+      );
+      const populatedOtp = await otp.populate({
+        path: "user",
+        select: {
+          email: 1,
+          firstName: 1,
+        },
+      });
+
+      await this.mail.sendOtp(populatedOtp);
+
+      return httpResponse({
+        message: "User created successfully",
+        data: {
+          token,
+          profile: new ProfileResource(user).toJson(),
+        },
+      });
+    } catch (e: any) {
+      console.log(e);
+      if (e?.errorResponse?.code === MONGOOSE_ERROR_CODES.DUPLICATE_KEY) {
+        throw new BadRequestException("Email already exists");
+      }
+      throw new InternalServerErrorException(
+        "An error occurred while creating the user",
+      );
+    }
+  }
 
   async donorSignUp(body: DonorSignUpSchemaType) {
     try {
