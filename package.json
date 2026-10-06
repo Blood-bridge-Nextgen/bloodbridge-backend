@@ -66,6 +66,9 @@
     ],
     "ignoredBuiltDependencies": [
       "@scarf/scarf"
-    ]
+    ],
+    "overrides": {
+      "typescript": "^6.0.3"
+    }
   }
 }
