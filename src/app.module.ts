@@ -4,9 +4,10 @@ import { ThrottlerModule } from "@nestjs/throttler";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { AuthModule } from "./auth/auth.module";
+import { DonationRequestModule } from "./donation-request/donation-request.module";
 import { THROTTLE_LIMIT, THROTTLE_TTL } from "./lib/constants";
-import { MailService } from './mail/mail.service';
-import { DonationModule } from './donation/donation.module';
+import { MailService } from "./mail/mail.service";
+import { FacilityModule } from './facility/facility.module';
 
 @Module({
   imports: [
@@ -24,7 +25,8 @@ import { DonationModule } from './donation/donation.module';
       envFilePath: ".env",
     }),
     AuthModule,
-    DonationModule,
+    DonationRequestModule,
+    FacilityModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailService],

@@ -40,6 +40,7 @@ export class AuthController {
           format: "email",
           example: "newuser@localhost.com",
         },
+
         phone: { type: "string", example: "00000000000" },
         address: { type: "string", example: "123 Main Street" },
         dob: { type: "string", format: "date" },
@@ -101,6 +102,13 @@ export class AuthController {
           type: "string",
           format: "email",
           example: "newuser@localhost.com",
+        },
+        location: {
+          type: "object",
+          properties: {
+            lat: { type: "number", example: 6.5244 },
+            lng: { type: "number", example: 3.3792 },
+          },
         },
         phone: { type: "string", example: "00000000000" },
         address: { type: "string", example: "123 Main Street" },

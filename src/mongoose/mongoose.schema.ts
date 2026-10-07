@@ -45,6 +45,23 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
+    location: {
+      type: new Schema(
+        {
+          lat: {
+            type: Number,
+            required: true,
+          },
+          lng: {
+            type: Number,
+            required: true,
+          },
+        },
+        { _id: false },
+      ),
+      required: isFacility,
+      default: null,
+    },
     role: {
       type: String,
       enum: ["donor", "facility", "admin"],
@@ -62,28 +79,33 @@ const UserSchema = new Schema(
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   },
 );
+UserSchema.virtual("facilityDetails", {
+  ref: "FacilityDetails",
+  localField: "_id",
+  foreignField: "user",
+  justOne: true,
+});
 
 UserSchema.virtual("donorDetails", {
   ref: "DonorDetails",
   localField: "_id",
   foreignField: "user",
+  justOne: true,
 });
 
 UserSchema.virtual("kyc", {
   ref: "KycVerification",
   localField: "_id",
   foreignField: "user",
+  justOne: true,
 });
 
 UserSchema.virtual("oneTimePasswords", {
   ref: "OneTimePassword",
-  localField: "_id",
-  foreignField: "user",
-});
-UserSchema.virtual("facilityDetails", {
-  ref: "FacilityDetails",
   localField: "_id",
   foreignField: "user",
 });
@@ -176,12 +198,17 @@ const OneTimePasswordSchema = new Schema(
   },
 );
 
-const DonationListingSchema = new Schema(
+const DonationRequestSchema = new Schema(
   {
     bloodGroup: {
       type: String,
       enum: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
       required: true,
+    },
+    status: {
+      type: String,
+      enum: ["open", "closed"],
+      default: "open",
     },
     quantity: {
       type: Number,
@@ -212,10 +239,44 @@ const DonationListingSchema = new Schema(
     timestamps: true,
   },
 );
+DonationRequestSchema.virtual("submissions", {
+  ref: "RequestSubmission",
+  localField: "_id",
+  foreignField: "request",
+});
+
+const RequestSubmissionSchema = new Schema(
+  {
+    request: {
+      type: Schema.Types.ObjectId,
+      ref: "DonationRequest",
+      required: true,
+    },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: ["pending", "accepted", "paid", "rejected"],
+      default: "pending",
+    },
+  },
+  {
+    timestamps: true,
+  },
+);
+
+RequestSubmissionSchema.index({ request: 1, user: 1 }, { unique: true });
 
 export const FacilityDetails = model("FacilityDetails", FacilityDetailsSchema);
 export const OneTimePassword = model("OneTimePassword", OneTimePasswordSchema);
 export const User = model("User", UserSchema);
 export const DonorDetails = model("DonorDetails", DonorDetailsSchema);
 export const KycVerification = model("KycVerification", KycVerificationSchema);
-export const DonationListing = model("DonationListing", DonationListingSchema);
+export const DonationRequest = model("DonationRequest", DonationRequestSchema);
+export const RequestSubmission = model(
+  "RequestSubmission",
+  RequestSubmissionSchema,
+);

@@ -9,6 +9,14 @@ export const FacilitySignUpSchema = z
     password: z.string().min(6, "Password must be at least 6 characters long"),
     confirmPassword: z.string(),
     registrationNumber: z.string().min(1, "Registration number is required"),
+    location: z.object({
+      lat: z.number({
+        error: "Latitude must be a number",
+      }),
+      lng: z.number({
+        error: "Longitude must be a number",
+      }),
+    }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",

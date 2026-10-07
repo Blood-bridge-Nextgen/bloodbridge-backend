@@ -41,6 +41,7 @@ export class AuthService {
         phone: body.phone,
         organizationName: body.organizationName,
         address: body.address,
+        location: body.location,
         hash: this.hashPassword(body.password),
         role: "facility",
       });
