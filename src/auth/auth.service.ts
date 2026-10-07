@@ -217,7 +217,7 @@ export class AuthService {
     } catch (e: any) {
       console.log(e);
       throw new InternalServerErrorException(
-        "An error occurred while signing in the user",
+        e?.message || "An error occurred while signing in the user",
       );
     }
   }
