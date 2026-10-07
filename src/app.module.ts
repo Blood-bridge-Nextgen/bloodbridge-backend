@@ -8,6 +8,7 @@ import { DonationRequestModule } from "./donation-request/donation-request.modul
 import { THROTTLE_LIMIT, THROTTLE_TTL } from "./lib/constants";
 import { MailService } from "./mail/mail.service";
 import { FacilityModule } from './facility/facility.module';
+import { DonorModule } from './donor/donor.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { FacilityModule } from './facility/facility.module';
     AuthModule,
     DonationRequestModule,
     FacilityModule,
+    DonorModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailService],

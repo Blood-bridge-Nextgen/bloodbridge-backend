@@ -13,7 +13,7 @@ import {
 } from "./facility.schema";
 import { FacilityService } from "./facility.service";
 
-@Controller("facility")
+@Controller("facility/profile")
 @ApiTags("Facility")
 @UseGuards(
   AuthGuard,

@@ -159,26 +159,6 @@ export class FacilityRequestController {
     );
   }
 
-  // @Get("/get-closest-facilities")
-  // @ApiQuery({
-  //   name: "token",
-  //   description: "JWT token for authentication",
-  // })
-  // @ApiQuery({
-  //   name: "page",
-  //   description: "Page number for pagination",
-  //   example: 1,
-  // })
-  // @ApiQuery({
-  //   name: "limit",
-  //   description: "Number of results to return per page",
-  //   example: 10,
-  // })
-  // @ApiOkResponse({})
-  // async getFacilitiesClosestToLocation(@Req() req: any) {
-  //   return await this.requestService.getFacilitiesClosestToLocation(req.query);
-  // }
-
   @Put("/:requestId")
   @ApiQuery({
     name: "token",
