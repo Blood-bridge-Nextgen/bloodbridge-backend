@@ -167,59 +167,52 @@ export class AuthService {
   }
 
   async signIn(body: SignInSchemaType) {
-    try {
-      const user = await User.findOne({ email: body.email })
-        .select({
-          firstName: 1,
-          lastName: 1,
-          otherNames: 1,
-          organizationName: 1,
-          email: 1,
-          phone: 1,
-          address: 1,
-          role: 1,
-          dob: 1,
+    const user = await User.findOne({ email: body.email })
+      .select({
+        firstName: 1,
+        lastName: 1,
+        otherNames: 1,
+        organizationName: 1,
+        email: 1,
+        phone: 1,
+        address: 1,
+        role: 1,
+        dob: 1,
+        status: 1,
+        hash: 1,
+      })
+      .populate({
+        path: "kyc",
+        select: {
           status: 1,
-          hash: 1,
-        })
-        .populate({
-          path: "kyc",
-          select: {
-            status: 1,
-          },
-          justOne: true,
-        });
-
-      if (!user) {
-        throw new BadRequestException("Invalid email or password");
-      }
-
-      const isMatch = this.checkHashedPassword(body.password, user.hash);
-      if (!isMatch) {
-        throw new BadRequestException("Invalid email or password");
-      }
-
-      const token = this.jwt.sign(
-        { userId: user._id, role: user.role },
-        {
-          expiresIn: "7d",
-          secret: process.env.JWT_SECRET || "",
         },
-      );
-
-      return httpResponse({
-        message: "User signed in successfully",
-        data: {
-          token,
-          profile: new ProfileResource(user).toJson(),
-        },
+        justOne: true,
       });
-    } catch (e: any) {
-      console.log(e);
-      throw new InternalServerErrorException(
-        e?.message || "An error occurred while signing in the user",
-      );
+
+    if (!user) {
+      throw new BadRequestException("Invalid email or password");
     }
+
+    const isMatch = this.checkHashedPassword(body.password, user.hash);
+    if (!isMatch) {
+      throw new BadRequestException("Invalid email or password");
+    }
+
+    const token = this.jwt.sign(
+      { userId: user._id, role: user.role },
+      {
+        expiresIn: "7d",
+        secret: process.env.JWT_SECRET || "",
+      },
+    );
+
+    return httpResponse({
+      message: "User signed in successfully",
+      data: {
+        token,
+        profile: new ProfileResource(user).toJson(),
+      },
+    });
   }
 
   async verifyEmail(userId: string, body: VerifyEmailSchemaType) {
