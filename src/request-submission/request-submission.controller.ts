@@ -139,6 +139,7 @@ export class RequestSubmissionController {
     name: "token",
     required: true,
   })
+  @ApiTags("Update Submission Status - pending/accepted/rejected")
   @ApiBody({
     schema: {
       type: "object",

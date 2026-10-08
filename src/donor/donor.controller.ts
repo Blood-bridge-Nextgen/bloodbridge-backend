@@ -132,6 +132,7 @@ export class DonorController {
   }
 
   @Patch("availability")
+  @ApiTags("Donor Availability - available/unavailable")
   @ApiQuery({
     name: "token",
     description: "JWT token for authentication",

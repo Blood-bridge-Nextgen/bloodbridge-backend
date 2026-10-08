@@ -30,7 +30,7 @@ import {
 } from "./donation-request.schema";
 import { DonationRequestService } from "./donation-request.service";
 
-@ApiTags("Requests")
+@ApiTags("Donation Requests")
 @UseGuards(AuthGuard, VerificationGuard, StatusGuard("active"))
 @Controller("requests")
 export class FacilityRequestController {
