@@ -86,7 +86,6 @@ export class AuthService {
         },
       });
     } catch (e: any) {
-      console.log(e);
       if (e?.errorResponse?.code === MONGOOSE_ERROR_CODES.DUPLICATE_KEY) {
         throw new BadRequestException("Email already exists");
       }

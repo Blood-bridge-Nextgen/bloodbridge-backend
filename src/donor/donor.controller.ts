@@ -2,12 +2,20 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Patch,
+  Post,
   Put,
   Req,
   UseGuards,
 } from "@nestjs/common";
-import { ApiBody, ApiOkResponse, ApiQuery, ApiTags } from "@nestjs/swagger";
+import {
+  ApiBody,
+  ApiOkResponse,
+  ApiParam,
+  ApiQuery,
+  ApiTags,
+} from "@nestjs/swagger";
 import {
   AuthGuard,
   RoleGuard,
@@ -207,5 +215,116 @@ export class DonorController {
   })
   async getFacilitiesClosestToLocation(@Req() req: any) {
     return await this.donorService.getFacilitiesClosestToLocation(req.query);
+  }
+
+  @Get("requests")
+  @ApiQuery({
+    name: "token",
+    description: "JWT token for authentication",
+  })
+  @ApiQuery({
+    name: "page",
+    description: "Page number for pagination",
+    example: 1,
+    required: false,
+  })
+  @ApiQuery({
+    name: "limit",
+    description: "Number of results to return per page",
+    example: 10,
+    required: false,
+  })
+  @ApiQuery({
+    name: "status",
+    description: "Status of the requests to filter by",
+    example: "open",
+    required: false,
+    enum: ["open", "closed"],
+  })
+  @ApiOkResponse({
+    example: {
+      code: 200,
+      data: {
+        data: [
+          {
+            _id: "6ac6503a53d954574f151762",
+            bloodGroup: "A+",
+            status: "closed",
+            quantity: 2,
+            pricePerPint: 0,
+            requiredDonors: 1,
+            type: "voluntary",
+            facility: {
+              _id: "6ac61236e71c125a07d3b1b7",
+              organizationName: "string",
+              email: "labane3138@meinvr.com",
+              phone: "string",
+              id: "6ac61236e71c125a07d3b1b7",
+            },
+            createdAt: "2026-10-07T13:59:22.755Z",
+            updatedAt: "2026-10-07T14:02:29.283Z",
+            __v: 0,
+          },
+        ],
+        meta: {
+          currentPage: "1",
+          perPage: 10,
+          skip: 0,
+          lastPage: 1,
+          nextPage: null,
+          prevPage: null,
+          from: 1,
+          to: 1,
+        },
+      },
+      message: "Request made",
+    },
+  })
+  async getRequests(@Req() req: any) {
+    return await this.donorService.getRequests(req.query);
+  }
+
+  @Post("requests/:requestId/respond")
+  @ApiQuery({
+    name: "token",
+    description: "JWT token for authentication",
+  })
+  @ApiParam({
+    name: "requestId",
+    description: "ID of the request to respond to",
+  })
+  async respondToRequest(
+    @Req() req: any,
+    @Param("requestId") requestId: string,
+  ) {
+    return await this.donorService.respondToRequest(requestId, req.user);
+  }
+
+  @Get("donations")
+  @ApiQuery({
+    name: "token",
+    description: "JWT token for authentication",
+  })
+  @ApiQuery({
+    name: "page",
+    description: "Page number for pagination",
+    example: 1,
+    required: false,
+  })
+  @ApiQuery({
+    name: "limit",
+    description: "Number of results to return per page",
+    example: 10,
+    required: false,
+  })
+  @ApiQuery({
+    name: "status",
+    description: "Status of the requests to filter by",
+    example: "pending",
+    required: false,
+    enum: ["pending", "accepted", "paid", "rejected"],
+  })
+  async getDonations(@Req() req: any) {
+    return await this.donorService.getRequestSubmissions(req.user, req.query);
   }
 }

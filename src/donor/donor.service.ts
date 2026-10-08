@@ -1,7 +1,20 @@
-import { Injectable } from "@nestjs/common";
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from "@nestjs/common";
 import { FacilityResource } from "../donation-request/donation-request.resource";
-import { httpResponse, paginatedData } from "../lib/utils";
-import { DonorDetails, User } from "../mongoose/mongoose.schema";
+import {
+  httpResponse,
+  MONGOOSE_ERROR_CODES,
+  paginatedData,
+} from "../lib/utils";
+import {
+  DonationRequest,
+  DonorDetails,
+  RequestSubmission,
+  User,
+} from "../mongoose/mongoose.schema";
 import { ProfileResource } from "./donor.resource";
 import {
   UpdateAvailabilitySchemaType,
@@ -73,6 +86,7 @@ export class DonorService {
       message: "Donor availability updated successfully",
     });
   }
+
   async getFacilitiesClosestToLocation(query: any) {
     if (!query.lat || !query.lng) {
       throw new Error("Latitude and longitude are required");
@@ -184,6 +198,114 @@ export class DonorService {
       data: {
         data,
         meta: paginatedData(query, totalFacilities),
+      },
+    });
+  }
+
+  async getRequests(query: any) {
+    const page = parseInt(query.page, 10) || 1;
+    const limit = parseInt(query.limit, 10) || 10;
+    const status = query.status;
+    const skip = (page - 1) * limit;
+
+    const requests = await DonationRequest.find({
+      ...(status ? { status } : {}),
+    })
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .populate({
+        path: "facility",
+        select: {
+          organizationName: 1,
+          email: 1,
+          phone: 1,
+        },
+      });
+    const totalRequests = await DonationRequest.countDocuments({
+      ...(status ? { status } : {}),
+    });
+    const pagination = paginatedData(query, totalRequests);
+
+    return httpResponse({
+      data: {
+        data: requests,
+        meta: pagination,
+      },
+    });
+  }
+
+  async respondToRequest(requestId: string, user: any) {
+    try {
+      await RequestSubmission.create({
+        request: requestId,
+        user: user._id,
+      });
+
+      return httpResponse({
+        message: "Request submission created successfully",
+      });
+    } catch (e: any) {
+      if (e?.errorResponse?.code === MONGOOSE_ERROR_CODES.DUPLICATE_KEY) {
+        throw new BadRequestException(
+          "You have already responded to this request",
+        );
+      }
+      throw new InternalServerErrorException(
+        "An error occurred while creating the user",
+      );
+    }
+  }
+
+  async getRequestSubmissions(user: any, query: any) {
+    const page = parseInt(query.page, 10) || 1;
+    const limit = parseInt(query.limit, 10) || 10;
+    const status = query.status;
+    const skip = (page - 1) * limit;
+
+    const submissions = await RequestSubmission.find({
+      user: user._id,
+      ...(status ? { status } : {}),
+    })
+      .select({
+        status: 1,
+        createdAt: 1,
+        updatedAt: 1,
+      })
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .populate({
+        path: "request",
+        select: {
+          bloodGroup: 1,
+          status: 1,
+          quantity: 1,
+          pricePerPint: 1,
+          requiredDonors: 1,
+          type: 1,
+        },
+        populate: {
+          path: "facility",
+          select: {
+            organizationName: 1,
+            email: 1,
+            phone: 1,
+            address: 1,
+            location: 1,
+          },
+        },
+      });
+    const totalSubmissions = await RequestSubmission.countDocuments({
+      user: user._id,
+      ...(status ? { status } : {}),
+    });
+    const pagination = paginatedData(query, totalSubmissions);
+
+    return httpResponse({
+      data: {
+        data: submissions,
+        meta: pagination,
       },
     });
   }
