@@ -47,3 +47,10 @@ export const paginatedData = (query: any, total: number) => {
     to: skip + (total > limit ? limit : total),
   };
 };
+
+export const currencyFormatter = (amount: number, currency: string) => {
+  return new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency,
+  }).format(amount);
+};

@@ -269,6 +269,86 @@ const RequestSubmissionSchema = new Schema(
 );
 
 RequestSubmissionSchema.index({ request: 1, user: 1 }, { unique: true });
+RequestSubmissionSchema.virtual("transaction", {
+  ref: "Transaction",
+  localField: "_id",
+  foreignField: "requestSubmission",
+  justOne: true,
+});
+
+const WalletSchema = new Schema(
+  {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    balance: {
+      type: Number,
+      default: 0,
+    },
+  },
+  {
+    timestamps: true,
+  },
+);
+
+const TransactionSchema = new Schema(
+  {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    requestSubmission: {
+      type: Schema.Types.ObjectId,
+      ref: "RequestSubmission",
+      required: false,
+      default: null,
+    },
+    reference: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    metadata: {
+      type: Schema.Types.Mixed,
+      default: {},
+    },
+    amount: {
+      type: Number,
+      required: true,
+    },
+    currency: {
+      type: String,
+      enum: ["NGN"],
+      default: "NGN",
+    },
+    type: {
+      type: String,
+      enum: ["credit", "debit"],
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: ["pending", "completed", "failed"],
+      default: "pending",
+    },
+    description: {
+      type: String,
+      default: null,
+    },
+  },
+  {
+    timestamps: true,
+  },
+);
+
+TransactionSchema.index(
+  { user: 1, requestSubmission: 1 },
+  { unique: true },
+  // { unique: true, sparse: true },
+);
 
 export const FacilityDetails = model("FacilityDetails", FacilityDetailsSchema);
 export const OneTimePassword = model("OneTimePassword", OneTimePasswordSchema);
@@ -280,3 +360,5 @@ export const RequestSubmission = model(
   "RequestSubmission",
   RequestSubmissionSchema,
 );
+export const Wallet = model("Wallet", WalletSchema);
+export const Transaction = model("Transaction", TransactionSchema);

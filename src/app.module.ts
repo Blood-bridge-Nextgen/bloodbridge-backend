@@ -9,6 +9,9 @@ import { THROTTLE_LIMIT, THROTTLE_TTL } from "./lib/constants";
 import { MailService } from "./mail/mail.service";
 import { FacilityModule } from './facility/facility.module';
 import { DonorModule } from './donor/donor.module';
+import { BachsService } from './bachs/bachs.service';
+import { RequestSubmissionModule } from './request-submission/request-submission.module';
+import { WebhookModule } from './webhook/webhook.module';
 
 @Module({
   imports: [
@@ -29,8 +32,10 @@ import { DonorModule } from './donor/donor.module';
     DonationRequestModule,
     FacilityModule,
     DonorModule,
+    RequestSubmissionModule,
+    WebhookModule,
   ],
   controllers: [AppController],
-  providers: [AppService, MailService],
+  providers: [AppService, MailService, BachsService],
 })
 export class AppModule {}

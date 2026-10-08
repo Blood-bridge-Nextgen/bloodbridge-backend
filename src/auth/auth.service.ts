@@ -7,6 +7,7 @@ import {
 import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from "bcryptjs";
 import * as dotenv from "dotenv";
+import { BachsService } from "../bachs/bachs.service";
 import { httpResponse, MONGOOSE_ERROR_CODES } from "../lib/utils";
 import { MailService } from "../mail/mail.service";
 import {
@@ -14,6 +15,7 @@ import {
   FacilityDetails,
   OneTimePassword,
   User,
+  Wallet,
 } from "../mongoose/mongoose.schema";
 import { ProfileResource } from "./auth.resource";
 import {
@@ -46,6 +48,10 @@ export class AuthService {
         role: "facility",
       });
       await user.save();
+
+      await Wallet.create({
+        user: user._id,
+      });
 
       await FacilityDetails.create({
         registrationNumber: body.registrationNumber,
@@ -229,6 +235,7 @@ export class AuthService {
     });
 
     await User.updateOne({ _id: userId }, { emailVerifiedAt: new Date() });
+
     return httpResponse({
       message: "Email verified successfully",
     });
