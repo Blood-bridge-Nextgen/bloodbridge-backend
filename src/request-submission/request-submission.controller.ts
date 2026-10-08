@@ -168,6 +168,13 @@ export class RequestSubmissionController {
     name: "token",
     required: true,
   })
+  @ApiOkResponse({
+    example: {
+      data: {
+        checkoutUrl: "<checkout_url>",
+      },
+    },
+  })
   async makePayment(
     @Param("submissionId") submissionId: string,
     @Req() req: any,
