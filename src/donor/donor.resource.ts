@@ -7,6 +7,7 @@ type ProfileResourceType = {
   otherNames?: string | null;
   email: string;
   phone: string;
+  dob: string;
   address: string;
   location: {
     lat: number;
@@ -28,6 +29,7 @@ type UserWithProfile = {
   otherNames?: string | null;
   email: string;
   phone: string;
+  dob: NativeDate;
   address: string;
   location: {
     lat: number;
@@ -59,6 +61,7 @@ export class ProfileResource implements ResourceInterface<ProfileResourceType> {
       otherNames: src.otherNames,
       email: src.email,
       phone: src.phone,
+      dob: src.dob.toDateString(),
       address: src.address,
       location: src.location,
       role: src.role,
