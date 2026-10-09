@@ -17,6 +17,37 @@ export class BachsService {
     });
   }
 
+  async listBanks(): Promise<
+    {
+      name: string;
+      code: string;
+    }[]
+  > {
+    return this.bachsApi({
+      method: "GET",
+      url: "/v1/reference/banks",
+    }).then((res) => res.data.banks);
+  }
+
+  async resolveAccount(
+    accountNumber: string,
+    bankCode: string,
+  ): Promise<{
+    resolved: boolean;
+    account_name: string | null;
+    account_number: string | null;
+  }> {
+    return this.bachsApi({
+      method: "POST",
+      url: "/v1/misc/bank-accounts/resolve",
+      data: {
+        account_number: accountNumber,
+        bank_code: bankCode,
+        country: "NG",
+      },
+    }).then((res) => res.data);
+  }
+
   async createPaymentLink(transaction: any): Promise<string> {
     return this.bachsApi({
       method: "POST",

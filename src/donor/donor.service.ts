@@ -47,7 +47,6 @@ export class DonorService {
     user.email = body.email;
     user.phone = body.phone;
     user.address = body.address;
-    user.location = body.location;
     await user.save();
 
     const donorDetails = await DonorDetails.findOne({ user: user._id });

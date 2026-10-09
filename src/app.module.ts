@@ -13,6 +13,7 @@ import { BachsService } from './bachs/bachs.service';
 import { RequestSubmissionModule } from './request-submission/request-submission.module';
 import { WebhookModule } from './webhook/webhook.module';
 import { PayoutModule } from './payout/payout.module';
+import { WalletModule } from './wallet/wallet.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { PayoutModule } from './payout/payout.module';
     RequestSubmissionModule,
     WebhookModule,
     PayoutModule,
+    WalletModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailService, BachsService],

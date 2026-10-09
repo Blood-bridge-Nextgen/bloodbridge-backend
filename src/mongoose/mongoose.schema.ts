@@ -375,6 +375,10 @@ const AccountDetailsSchema = new Schema(
       type: String,
       required: true,
     },
+    bankCode: {
+      type: String,
+      required: true,
+    },
     user: {
       type: Schema.Types.ObjectId,
       ref: "User",

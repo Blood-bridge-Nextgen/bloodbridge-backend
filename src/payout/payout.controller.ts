@@ -27,6 +27,8 @@ import {
   type AccountDetailsSchemaType,
   PayoutSchema,
   type PayoutSchemaType,
+  ResolveAccountSchema,
+  type ResolveAccountSchemaType,
 } from "./payout.schema";
 import { PayoutService } from "./payout.service";
 
@@ -40,6 +42,61 @@ import { PayoutService } from "./payout.service";
 )
 export class PayoutController {
   constructor(private readonly payoutService: PayoutService) {}
+
+  @Get("/banks")
+  @ApiQuery({
+    name: "token",
+    description: "JWT token for authentication",
+    required: true,
+  })
+  @ApiOkResponse({
+    example: {
+      code: 200,
+      data: [
+        {
+          name: "Access Bank",
+          code: "044",
+        },
+      ],
+      message: "Request made",
+    },
+  })
+  async listBanks() {
+    return await this.payoutService.listBanks();
+  }
+
+  @Post("/resolve-account")
+  @ApiQuery({
+    name: "token",
+    description: "JWT token for authentication",
+    required: true,
+  })
+  @ApiBody({
+    schema: {
+      type: "object",
+      properties: {
+        accountNumber: { type: "string" },
+        bankCode: { type: "string" },
+      },
+      required: ["accountNumber", "bankCode"],
+    },
+  })
+  @ApiOkResponse({
+    example: {
+      code: 200,
+      data: {
+        accountName: "Name",
+        accountNumber: "1234567890",
+      },
+      message: "Request made",
+    },
+  })
+  async resolveAccount(
+    @Body(new ZodValidationPipe(ResolveAccountSchema))
+    body: ResolveAccountSchemaType,
+  ) {
+    return await this.payoutService.resolveAccount(body);
+  }
 
   @Post("")
   @ApiQuery({
@@ -111,6 +168,66 @@ export class PayoutController {
     return await this.payoutService.getDonorPayouts(req.user, req.query);
   }
 
+  @Put("/account-details")
+  @ApiQuery({
+    name: "token",
+    description: "JWT token for authentication",
+    required: true,
+  })
+  @ApiBody({
+    description: "Account details to update",
+    schema: {
+      type: "object",
+      properties: {
+        accountName: { type: "string" },
+        accountNumber: { type: "string" },
+        bankName: { type: "string" },
+      },
+      required: ["accountName", "accountNumber", "bankName"],
+    },
+  })
+  @ApiOkResponse({
+    example: {
+      code: 200,
+      data: {
+        accountName: "string",
+        accountNumber: "string",
+        bankName: "string",
+        bankCode: "string",
+      },
+      message: "Request made",
+    },
+  })
+  async updateAccountDetails(
+    @Body(new ZodValidationPipe(AccountDetailsSchema))
+    body: AccountDetailsSchemaType,
+    @Req() req: any,
+  ) {
+    return await this.payoutService.updateAccountDetails(body, req.user);
+  }
+
+  @Get("/account-details")
+  @ApiQuery({
+    name: "token",
+    description: "JWT token for authentication",
+    required: true,
+  })
+  @ApiOkResponse({
+    example: {
+      code: 200,
+      data: {
+        accountName: "string",
+        accountNumber: "string",
+        bankName: "string",
+        bankCode: "string",
+      },
+      message: "Request made",
+    },
+  })
+  async getAccountDetails(@Req() req: any) {
+    return await this.payoutService.getAccountDetails(req.user);
+  }
+
   @Get("/:payoutId")
   @ApiQuery({
     name: "token",
@@ -144,63 +261,5 @@ export class PayoutController {
   })
   async getPayout(@Req() req: any, @Param("payoutId") payoutId: string) {
     return await this.payoutService.getPayout(payoutId, req.user);
-  }
-
-  @Put("/account-details")
-  @ApiQuery({
-    name: "token",
-    description: "JWT token for authentication",
-    required: true,
-  })
-  @ApiBody({
-    description: "Account details to update",
-    schema: {
-      type: "object",
-      properties: {
-        accountName: { type: "string" },
-        accountNumber: { type: "string" },
-        bankName: { type: "string" },
-      },
-      required: ["accountName", "accountNumber", "bankName"],
-    },
-  })
-  @ApiOkResponse({
-    example: {
-      code: 200,
-      data: {
-        accountName: "string",
-        accountNumber: "string",
-        bankName: "string",
-      },
-      message: "Request made",
-    },
-  })
-  async updateAccountDetails(
-    @Body(new ZodValidationPipe(AccountDetailsSchema))
-    body: AccountDetailsSchemaType,
-    @Req() req: any,
-  ) {
-    return await this.payoutService.updateAccountDetails(body, req.user);
-  }
-
-  @Get("/account-details")
-  @ApiQuery({
-    name: "token",
-    description: "JWT token for authentication",
-    required: true,
-  })
-  @ApiOkResponse({
-    example: {
-      code: 200,
-      data: {
-        accountName: "string",
-        accountNumber: "string",
-        bankName: "string",
-      },
-      message: "Request made",
-    },
-  })
-  async getAccountDetails(@Req() req: any) {
-    return await this.payoutService.getAccountDetails(req.user);
   }
 }

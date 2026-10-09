@@ -7,14 +7,7 @@ export const UpdateDonorSchema = z.object({
   email: z.email("Invalid email"),
   phone: z.string().min(1, "Phone number is required"),
   address: z.string().min(1, "Address is required"),
-  location: z.object({
-    lat: z.number({
-      error: "Latitude must be a number",
-    }),
-    lng: z.number({
-      error: "Longitude must be a number",
-    }),
-  }),
+
   bloodGroup: z.enum(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"], {
     error: "Accepted values are A+, A-, B+, B-, AB+, AB-, O+, O-",
   }),

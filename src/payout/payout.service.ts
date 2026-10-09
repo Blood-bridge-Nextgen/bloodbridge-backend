@@ -1,13 +1,21 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
+import { BachsService } from "../bachs/bachs.service";
 import { httpResponse, paginatedData } from "../lib/utils";
 import { MailService } from "../mail/mail.service";
 import { AccountDetails, Payout } from "../mongoose/mongoose.schema";
 import { PayoutResource } from "./payout.resource";
-import { AccountDetailsSchemaType, PayoutSchemaType } from "./payout.schema";
+import {
+  AccountDetailsSchemaType,
+  PayoutSchemaType,
+  ResolveAccountSchemaType,
+} from "./payout.schema";
 
 @Injectable()
 export class PayoutService {
-  constructor(private readonly mail: MailService) {}
+  constructor(
+    private readonly mail: MailService,
+    private readonly bachs: BachsService,
+  ) {}
 
   async updateAccountDetails(body: AccountDetailsSchemaType, user: any) {
     const accountDetails = await AccountDetails.findOneAndUpdate(
@@ -34,6 +42,7 @@ export class PayoutService {
       accountName: 1,
       accountNumber: 1,
       bankName: 1,
+      bankCode: 1,
     });
 
     return httpResponse({
@@ -48,10 +57,9 @@ export class PayoutService {
     });
 
     if (userWithWallet.wallet.balance < body.amount) {
-      return httpResponse({
-        code: 400,
-        message: "Insufficient balance",
-      });
+      throw new BadRequestException(
+        "Insufficient balance. Please check your wallet balance.",
+      );
     }
 
     const numberOfPayoutsThisWeek = await Payout.countDocuments({
@@ -63,10 +71,9 @@ export class PayoutService {
     });
 
     if (numberOfPayoutsThisWeek >= 1) {
-      return httpResponse({
-        code: 400,
-        message: "You can only submit 1 payout request per week",
-      });
+      throw new BadRequestException(
+        "You can only submit 1 payout request per week",
+      );
     }
 
     await Payout.create({
@@ -135,6 +142,32 @@ export class PayoutService {
 
     return httpResponse({
       data: payout,
+    });
+  }
+
+  async listBanks() {
+    return httpResponse({
+      data: await this.bachs.listBanks(),
+    });
+  }
+
+  async resolveAccount(body: ResolveAccountSchemaType) {
+    const data = await this.bachs.resolveAccount(
+      body.accountNumber,
+      body.bankCode,
+    );
+
+    if (!data.resolved) {
+      throw new BadRequestException(
+        "Account could not be resolved. Please check the account number and bank.",
+      );
+    }
+
+    return httpResponse({
+      data: {
+        accountName: data.account_name,
+        accountNumber: data.account_number,
+      },
     });
   }
 }
