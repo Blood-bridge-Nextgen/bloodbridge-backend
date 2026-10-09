@@ -18,7 +18,7 @@ export class DonationRequestService {
       quantity: body.quantity,
       requiredDonors: body.requiredDonors,
       type: body.type,
-      pricePerPint: body.type === "paid" ? body.pricePerPint : 0,
+      pricePerPint: body.type === "paid" ? body.pricePerPint || 0 : 0,
       facility: userId,
     });
 
@@ -98,7 +98,7 @@ export class DonationRequestService {
     request.quantity = body.quantity;
     request.requiredDonors = body.requiredDonors;
     request.type = body.type;
-    request.pricePerPint = body.type === "paid" ? body.pricePerPint : 0;
+    request.pricePerPint = body.type === "paid" ? body.pricePerPint || 0 : 0;
 
     await request.save();
 

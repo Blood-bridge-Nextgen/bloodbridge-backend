@@ -199,6 +199,7 @@ export class RequestSubmissionService {
           status: 1,
           quantity: 1,
           pricePerPint: 1,
+          type: 1,
         },
         populate: {
           path: "facility",
@@ -225,6 +226,12 @@ export class RequestSubmissionService {
     if (submission.status !== "accepted") {
       throw new ForbiddenException(
         "Cannot pay for a submission that is not accepted",
+      );
+    }
+
+    if (submission.request.type !== "paid") {
+      throw new ForbiddenException(
+        "Cannot pay for a submission that is not a paid request",
       );
     }
     const totalAmount =

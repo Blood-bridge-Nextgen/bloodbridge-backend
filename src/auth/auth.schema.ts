@@ -26,7 +26,7 @@ export const DonorSignUpSchema = z
   .object({
     firstName: z.string().min(1, " is required"),
     lastName: z.string().min(1, " is required"),
-    otherNames: z.string().min(1, " is required"),
+    otherNames: z.string().nullable().optional(),
     email: z.email("Invalid email"),
     phone: z.string().min(1, " is required"),
     address: z.string().min(1, " is required"),

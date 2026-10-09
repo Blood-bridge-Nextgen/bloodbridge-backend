@@ -115,6 +115,12 @@ export class AuthService {
         role: "donor",
       });
       await user.save();
+
+      await Wallet.create({
+        user: user._id,
+        balance: 0,
+      });
+
       await DonorDetails.create({
         bloodGroup: body.bloodGroup,
         status: body.status,
