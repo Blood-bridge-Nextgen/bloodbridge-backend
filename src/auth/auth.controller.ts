@@ -72,6 +72,7 @@ export class AuthController {
           email: "newuser@localhost.com",
           phone: "00000000000",
           firstName: "Firstname",
+          emailVerifiedAt: null,
           lastName: "Lastname",
           dob: "2026-10-01T00:00:00.000Z",
           address: "123 Main Street",
@@ -131,6 +132,7 @@ export class AuthController {
           _id: "6abe898207559c383292476e",
           email: "newuser@localhost.com",
           organizationName: "Organization Name",
+          emailVerifiedAt: null,
           address: "123 Main Street",
           role: "facility",
           displayName: "Organization Name",
@@ -174,6 +176,7 @@ export class AuthController {
           phone: "00000000000",
           firstName: "Firstname",
           lastName: "Lastname",
+          emailVerifiedAt: null,
           dob: "2026-10-01T00:00:00.000Z",
           address: "123 Main Street",
           role: "donor",
@@ -263,6 +266,8 @@ export class AuthController {
         profile: {
           _id: "6abe898207559c383292476e",
           email: "newuser@localhost.com",
+          emailVerifiedAt: null,
+
           phone: "00000000000",
           firstName: "Firstname",
           lastName: "Lastname",

@@ -59,6 +59,7 @@ export class AuthGuard implements CanActivate {
         role: 1,
         dob: 1,
         status: 1,
+        emailVerifiedAt: 1,
       })
       .populate({
         path: "kyc",

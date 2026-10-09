@@ -11,6 +11,7 @@ type ProfileResourceType = {
   address: string;
   role: "admin" | "donor" | "facility";
   dob?: NativeDate | null | undefined;
+  emailVerifiedAt?: NativeDate | null;
   status: "active" | "pending" | "suspended";
   kyc?: {
     status: "pending" | "approved" | "rejected";
@@ -24,6 +25,7 @@ type UserWithProfile = {
   lastName?: string | null;
   otherNames?: string | null;
   organizationName?: string | null;
+  emailVerifiedAt?: NativeDate | null;
   email: string;
   phone: string;
   address: string;
@@ -56,6 +58,7 @@ export class ProfileResource implements ResourceInterface<ProfileResourceType> {
       otherNames: src.otherNames,
       organizationName: src.organizationName,
       role: src.role,
+      emailVerifiedAt: src.emailVerifiedAt,
       displayName: src.firstName
         ? `${src.firstName} ${src.lastName} ${src.otherNames || ""}`
         : src.organizationName || "",
