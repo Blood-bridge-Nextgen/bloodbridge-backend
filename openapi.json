@@ -1,0 +1,1909 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "AppController_healthCheck",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Health"
+        ]
+      }
+    },
+    "/auth/donor/sign-up": {
+      "post": {
+        "operationId": "AuthController_donorSignUp",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "example": "Firstname"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "Lastname"
+                  },
+                  "otherNames": {
+                    "type": "string",
+                    "example": "Other names"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "newuser@localhost.com"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "00000000000"
+                  },
+                  "address": {
+                    "type": "string",
+                    "example": "123 Main Street"
+                  },
+                  "dob": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "password"
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "password"
+                  },
+                  "bloodGroup": {
+                    "type": "string",
+                    "enum": [
+                      "A+",
+                      "A-",
+                      "B+",
+                      "B-",
+                      "AB+",
+                      "AB-",
+                      "O+",
+                      "O-"
+                    ]
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "available",
+                      "unavailable"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 200,
+                  "data": {
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YWJlODk4MjA3NTU5YzM4MzI5MjQ3NmUiLCJyb2xlIjoiZG9ub3IiLCJpYXQiOjE3OTA4NzE5MzgsImV4cCI6MTc5MTQ3NjczOH0.Ncua8HEfLrkeFeqFFQFLBD5UQrZk-7LROCi0S6RjEcY",
+                    "profile": {
+                      "_id": "6abe898207559c383292476e",
+                      "email": "newuser@localhost.com",
+                      "phone": "00000000000",
+                      "firstName": "Firstname",
+                      "emailVerifiedAt": null,
+                      "lastName": "Lastname",
+                      "dob": "2026-10-01T00:00:00.000Z",
+                      "address": "123 Main Street",
+                      "role": "donor",
+                      "displayName": "Firstname Lastname ",
+                      "status": "active",
+                      "kyc": []
+                    }
+                  },
+                  "message": "User created successfully"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Authentication"
+        ]
+      }
+    },
+    "/auth/facility/sign-up": {
+      "post": {
+        "operationId": "AuthController_facilitySignUp",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "organizationName": {
+                    "type": "string",
+                    "example": "Organization Name"
+                  },
+                  "registrationNumber": {
+                    "type": "string",
+                    "example": "Registration Number"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "newuser@localhost.com"
+                  },
+                  "location": {
+                    "type": "object",
+                    "properties": {
+                      "lat": {
+                        "type": "number",
+                        "example": 6.5244
+                      },
+                      "lng": {
+                        "type": "number",
+                        "example": 3.3792
+                      }
+                    }
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "00000000000"
+                  },
+                  "address": {
+                    "type": "string",
+                    "example": "123 Main Street"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "password"
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "password"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 200,
+                  "data": {
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YWJlODk4MjA3NTU5YzM4MzI5MjQ3NmUiLCJyb2xlIjoiZG9ub3IiLCJpYXQiOjE3OTA4NzE5MzgsImV4cCI6MTc5MTQ3NjczOH0.Ncua8HEfLrkeFeqFFQFLBD5UQrZk-7LROCi0S6RjEcY",
+                    "profile": {
+                      "_id": "6abe898207559c383292476e",
+                      "email": "newuser@localhost.com",
+                      "organizationName": "Organization Name",
+                      "emailVerifiedAt": null,
+                      "address": "123 Main Street",
+                      "role": "facility",
+                      "displayName": "Organization Name",
+                      "status": "active",
+                      "kyc": []
+                    }
+                  },
+                  "message": "User created successfully"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Authentication"
+        ]
+      }
+    },
+    "/auth/sign-in": {
+      "post": {
+        "operationId": "AuthController_signIn",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "newuser@localhost.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "password"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 200,
+                  "data": {
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YWJlODk4MjA3NTU5YzM4MzI5MjQ3NmUiLCJyb2xlIjoiZG9ub3IiLCJpYXQiOjE3OTA4NzE5MzgsImV4cCI6MTc5MTQ3NjczOH0.Ncua8HEfLrkeFeqFFQFLBD5UQrZk-7LROCi0S6RjEcY",
+                    "profile": {
+                      "_id": "6abe898207559c383292476e",
+                      "email": "newuser@localhost.com",
+                      "phone": "00000000000",
+                      "firstName": "Firstname",
+                      "lastName": "Lastname",
+                      "emailVerifiedAt": null,
+                      "dob": "2026-10-01T00:00:00.000Z",
+                      "address": "123 Main Street",
+                      "role": "donor",
+                      "displayName": "Firstname Lastname ",
+                      "status": "active",
+                      "kyc": []
+                    }
+                  },
+                  "message": "User created successfully"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Authentication"
+        ]
+      }
+    },
+    "/auth/send-password-reset": {
+      "post": {
+        "operationId": "AuthController_sendPasswordReset",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "newuser@localhost.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Authentication"
+        ]
+      }
+    },
+    "/auth/reset-password": {
+      "post": {
+        "operationId": "AuthController_resetPassword",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "code",
+                  "password",
+                  "confirmPassword"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "newuser@localhost.com"
+                  },
+                  "code": {
+                    "type": "string",
+                    "example": "00000"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "password"
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "password"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Authentication"
+        ]
+      }
+    },
+    "/auth/user": {
+      "get": {
+        "operationId": "AuthController_getUser",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "in": "query",
+            "description": "JWT token for authentication",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 200,
+                  "data": {
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YWJlODk4MjA3NTU5YzM4MzI5MjQ3NmUiLCJyb2xlIjoiZG9ub3IiLCJpYXQiOjE3OTA4NzE5MzgsImV4cCI6MTc5MTQ3NjczOH0.Ncua8HEfLrkeFeqFFQFLBD5UQrZk-7LROCi0S6RjEcY",
+                    "profile": {
+                      "_id": "6abe898207559c383292476e",
+                      "email": "newuser@localhost.com",
+                      "emailVerifiedAt": null,
+                      "phone": "00000000000",
+                      "firstName": "Firstname",
+                      "lastName": "Lastname",
+                      "dob": "2026-10-01T00:00:00.000Z",
+                      "address": "123 Main Street",
+                      "role": "donor",
+                      "displayName": "Firstname Lastname ",
+                      "status": "active",
+                      "kyc": []
+                    }
+                  },
+                  "message": "User created successfully"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Authentication"
+        ]
+      }
+    },
+    "/auth/resend-email-verification": {
+      "post": {
+        "operationId": "AuthController_resendEmailVerification",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "in": "query",
+            "description": "JWT token for authentication",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Authentication"
+        ]
+      }
+    },
+    "/auth/verify-email": {
+      "post": {
+        "operationId": "AuthController_verifyEmail",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "in": "query",
+            "description": "JWT token for authentication",
+            "schema": {}
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "code"
+                ],
+                "properties": {
+                  "code": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Authentication"
+        ]
+      }
+    },
+    "/requests": {
+      "post": {
+        "operationId": "FacilityRequestController_createDonation",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "in": "query",
+            "description": "JWT token for authentication",
+            "schema": {}
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "bloodGroup": {
+                    "type": "string",
+                    "enum": [
+                      "A+",
+                      "A-",
+                      "B+",
+                      "B-",
+                      "AB+",
+                      "AB-",
+                      "O+",
+                      "O-"
+                    ]
+                  },
+                  "pricePerPint": {
+                    "type": "number",
+                    "example": 1000
+                  },
+                  "quantity": {
+                    "type": "number"
+                  },
+                  "requiredDonors": {
+                    "type": "number"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "voluntary",
+                      "paid"
+                    ]
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "open",
+                      "closed"
+                    ],
+                    "example": "open"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Donation Requests"
+        ]
+      },
+      "get": {
+        "operationId": "FacilityRequestController_getRequests",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "description": "Number of results to return per page",
+            "schema": {
+              "example": 10
+            }
+          },
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "description": "Page number for pagination",
+            "schema": {
+              "example": 1
+            }
+          },
+          {
+            "name": "token",
+            "required": true,
+            "in": "query",
+            "description": "JWT token for authentication",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": [
+                    {
+                      "_id": "64b8f1e2c9a1f2b3d4e5f6a7",
+                      "bloodGroup": "A+",
+                      "quantity": 2,
+                      "requiredDonors": 5,
+                      "type": "voluntary"
+                    }
+                  ],
+                  "meta": {
+                    "currentPage": 1,
+                    "perPage": 10,
+                    "skip": 10,
+                    "lastPage": 4,
+                    "nextPage": 2,
+                    "prevPage": null,
+                    "from": 11,
+                    "to": 20
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Donation Requests"
+        ]
+      }
+    },
+    "/requests/{requestId}": {
+      "get": {
+        "operationId": "FacilityRequestController_getRequestById",
+        "parameters": [
+          {
+            "name": "requestId",
+            "required": true,
+            "in": "path",
+            "description": "ID of the donation request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "required": true,
+            "in": "query",
+            "description": "JWT token for authentication",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 200,
+                  "data": {
+                    "_id": "6ac6128be71c125a07d3b1ba",
+                    "bloodGroup": "A+",
+                    "quantity": 4,
+                    "pricePerPint": 0,
+                    "requiredDonors": 2,
+                    "type": "voluntary",
+                    "facility": "6ac61236e71c125a07d3b1b7",
+                    "createdAt": "2026-10-07T09:36:11.568Z",
+                    "updatedAt": "2026-10-07T09:36:11.568Z",
+                    "__v": 0
+                  },
+                  "message": "Request made"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Donation Requests"
+        ]
+      },
+      "put": {
+        "operationId": "FacilityRequestController_updateRequest",
+        "parameters": [
+          {
+            "name": "requestId",
+            "required": true,
+            "in": "path",
+            "description": "ID of the donation request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "required": true,
+            "in": "query",
+            "description": "JWT token for authentication",
+            "schema": {}
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "bloodGroup": {
+                    "type": "string",
+                    "enum": [
+                      "A+",
+                      "A-",
+                      "B+",
+                      "B-",
+                      "AB+",
+                      "AB-",
+                      "O+",
+                      "O-"
+                    ]
+                  },
+                  "pricePerPint": {
+                    "type": "number",
+                    "example": 1000
+                  },
+                  "quantity": {
+                    "type": "number"
+                  },
+                  "requiredDonors": {
+                    "type": "number"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "voluntary",
+                      "paid"
+                    ]
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "open",
+                      "closed"
+                    ],
+                    "example": "open"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Donation Requests"
+        ]
+      }
+    },
+    "/requests/{requestId}/close": {
+      "patch": {
+        "operationId": "FacilityRequestController_closeRequest",
+        "parameters": [
+          {
+            "name": "requestId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "required": true,
+            "in": "query",
+            "description": "JWT token for authentication",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Donation Requests"
+        ]
+      }
+    },
+    "/facility/profile": {
+      "get": {
+        "operationId": "FacilityController_getFacilityDetails",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "in": "query",
+            "description": "JWT token for authentication",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 200,
+                  "data": {
+                    "_id": "6ac61236e71c125a07d3b1b7",
+                    "organizationName": "Organization Name",
+                    "email": "labane3138@meinvr.com",
+                    "phone": "00000000000",
+                    "address": "123 Main Street",
+                    "role": "facility",
+                    "status": "active",
+                    "facilityDetails": {
+                      "_id": "6ac61236e71c125a07d3b1b8",
+                      "registrationNumber": "Registration Number",
+                      "user": "6ac61236e71c125a07d3b1b7"
+                    }
+                  },
+                  "message": "Request made"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Facility"
+        ]
+      },
+      "put": {
+        "operationId": "FacilityController_updateFacilityDetails",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "in": "query",
+            "description": "JWT token for authentication",
+            "schema": {}
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "organizationName",
+                  "email",
+                  "phone",
+                  "address",
+                  "location",
+                  "registrationNumber"
+                ],
+                "properties": {
+                  "organizationName": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "string"
+                  },
+                  "location": {
+                    "type": "object",
+                    "properties": {
+                      "lat": {
+                        "type": "number"
+                      },
+                      "lng": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "registrationNumber": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 200,
+                  "data": {
+                    "_id": "6ac61236e71c125a07d3b1b7",
+                    "organizationName": "string",
+                    "email": "labane3138@meinvr.com",
+                    "phone": "string",
+                    "address": "string",
+                    "location": {
+                      "lat": 0,
+                      "lng": 0
+                    },
+                    "role": "facility",
+                    "status": "active"
+                  },
+                  "message": "Facility details updated successfully"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Facility"
+        ]
+      }
+    },
+    "/donor/profile": {
+      "get": {
+        "operationId": "DonorController_getProfile",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "in": "query",
+            "description": "JWT token for authentication",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 200,
+                  "data": {
+                    "_id": "6abf49669ce610e06ce30e54",
+                    "firstName": "Firstname",
+                    "lastName": "Lastname",
+                    "email": "newuser@localhost.com",
+                    "phone": "00000000000",
+                    "address": "123 Main Street",
+                    "role": "donor",
+                    "status": "active",
+                    "donorDetails": {
+                      "_id": "6abf49669ce610e06ce30e55",
+                      "bloodGroup": "A+",
+                      "donationStatus": "available"
+                    }
+                  },
+                  "message": "Request made"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Donor"
+        ]
+      },
+      "put": {
+        "operationId": "DonorController_updateProfile",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "in": "query",
+            "description": "JWT token for authentication",
+            "schema": {}
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "example": "John"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "Doe"
+                  },
+                  "otherNames": {
+                    "type": "string",
+                    "example": "Smith"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "newuser@localhost.com"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "00000000000"
+                  },
+                  "address": {
+                    "type": "string",
+                    "example": "123 Main Street"
+                  },
+                  "location": {
+                    "type": "object",
+                    "properties": {
+                      "lat": {
+                        "type": "number",
+                        "example": 40.7128
+                      },
+                      "lng": {
+                        "type": "number",
+                        "example": -74.006
+                      }
+                    }
+                  },
+                  "bloodGroup": {
+                    "type": "string",
+                    "example": "A+"
+                  },
+                  "status": {
+                    "type": "string",
+                    "example": "available",
+                    "enum": [
+                      "available",
+                      "unavailable"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 200,
+                  "data": {
+                    "_id": "6abf49669ce610e06ce30e54",
+                    "firstName": "Firstname",
+                    "lastName": "Lastname",
+                    "email": "newuser@localhost.com",
+                    "phone": "00000000000",
+                    "address": "123 Main Street",
+                    "role": "donor",
+                    "status": "active",
+                    "donorDetails": {
+                      "_id": "6abf49669ce610e06ce30e55",
+                      "bloodGroup": "A+",
+                      "donationStatus": "available"
+                    }
+                  },
+                  "message": "Request made"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Donor"
+        ]
+      }
+    },
+    "/donor/availability": {
+      "patch": {
+        "operationId": "DonorController_updateAvailability",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "in": "query",
+            "description": "JWT token for authentication",
+            "schema": {}
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "available",
+                    "enum": [
+                      "available",
+                      "unavailable"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Donor",
+          "Donor Availability - available/unavailable"
+        ]
+      }
+    },
+    "/donor/requests/get-closest-facilities": {
+      "get": {
+        "operationId": "DonorController_getFacilitiesClosestToLocation",
+        "parameters": [
+          {
+            "name": "address",
+            "required": true,
+            "in": "query",
+            "description": "Address of the location to search for facilities",
+            "schema": {
+              "example": "123 Main Street"
+            }
+          },
+          {
+            "name": "lng",
+            "required": true,
+            "in": "query",
+            "description": "Longitude of the location to search for facilities",
+            "schema": {
+              "example": 10
+            }
+          },
+          {
+            "name": "lat",
+            "required": true,
+            "in": "query",
+            "description": "Latitude of the location to search for facilities",
+            "schema": {
+              "example": 10
+            }
+          },
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "description": "Number of results to return per page",
+            "schema": {
+              "example": 10
+            }
+          },
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "description": "Page number for pagination",
+            "schema": {
+              "example": 1
+            }
+          },
+          {
+            "name": "token",
+            "required": true,
+            "in": "query",
+            "description": "JWT token for authentication",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 200,
+                  "data": {
+                    "data": [
+                      {
+                        "_id": "6ac61236e71c125a07d3b1b7",
+                        "organizationName": "string",
+                        "email": "labane3138@meinvr.com",
+                        "phone": "string",
+                        "address": "string",
+                        "location": {
+                          "lat": 0,
+                          "lng": 0
+                        },
+                        "role": "facility"
+                      }
+                    ],
+                    "meta": {
+                      "currentPage": "1",
+                      "perPage": 10,
+                      "skip": 0,
+                      "lastPage": 1,
+                      "nextPage": null,
+                      "prevPage": null,
+                      "from": 1,
+                      "to": 1
+                    }
+                  },
+                  "message": "Request made"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Donor"
+        ]
+      }
+    },
+    "/donor/requests": {
+      "get": {
+        "operationId": "DonorController_getRequests",
+        "parameters": [
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "description": "Status of the requests to filter by",
+            "schema": {
+              "enum": [
+                "open",
+                "closed"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Number of results to return per page",
+            "schema": {
+              "example": 10
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number for pagination",
+            "schema": {
+              "example": 1
+            }
+          },
+          {
+            "name": "token",
+            "required": true,
+            "in": "query",
+            "description": "JWT token for authentication",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 200,
+                  "data": {
+                    "data": [
+                      {
+                        "_id": "6ac6503a53d954574f151762",
+                        "bloodGroup": "A+",
+                        "status": "closed",
+                        "quantity": 2,
+                        "pricePerPint": 0,
+                        "requiredDonors": 1,
+                        "type": "voluntary",
+                        "facility": {
+                          "_id": "6ac61236e71c125a07d3b1b7",
+                          "organizationName": "string",
+                          "email": "labane3138@meinvr.com",
+                          "phone": "string",
+                          "id": "6ac61236e71c125a07d3b1b7"
+                        },
+                        "createdAt": "2026-10-07T13:59:22.755Z",
+                        "updatedAt": "2026-10-07T14:02:29.283Z",
+                        "__v": 0
+                      }
+                    ],
+                    "meta": {
+                      "currentPage": "1",
+                      "perPage": 10,
+                      "skip": 0,
+                      "lastPage": 1,
+                      "nextPage": null,
+                      "prevPage": null,
+                      "from": 1,
+                      "to": 1
+                    }
+                  },
+                  "message": "Request made"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Donor"
+        ]
+      }
+    },
+    "/donor/requests/{requestId}/respond": {
+      "post": {
+        "operationId": "DonorController_respondToRequest",
+        "parameters": [
+          {
+            "name": "requestId",
+            "required": true,
+            "in": "path",
+            "description": "ID of the request to respond to",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "required": true,
+            "in": "query",
+            "description": "JWT token for authentication",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Donor"
+        ]
+      }
+    },
+    "/donor/donations": {
+      "get": {
+        "operationId": "DonorController_getDonations",
+        "parameters": [
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "description": "Status of the requests to filter by",
+            "schema": {
+              "enum": [
+                "pending",
+                "accepted",
+                "paid",
+                "rejected"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Number of results to return per page",
+            "schema": {
+              "example": 10
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number for pagination",
+            "schema": {
+              "example": 1
+            }
+          },
+          {
+            "name": "token",
+            "required": true,
+            "in": "query",
+            "description": "JWT token for authentication",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Donor"
+        ]
+      }
+    },
+    "/request-submission/{requestId}": {
+      "get": {
+        "operationId": "RequestSubmissionController_getSubmissions",
+        "parameters": [
+          {
+            "name": "requestId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "description": "Status of the request",
+            "schema": {
+              "enum": [
+                "pending",
+                "accepted",
+                "paid",
+                "rejected"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Number of items per page",
+            "schema": {}
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number for pagination",
+            "schema": {}
+          },
+          {
+            "name": "token",
+            "required": true,
+            "in": "query",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 200,
+                  "data": {
+                    "data": [
+                      {
+                        "_id": "6ac736676a9a609dcd9c1ccc",
+                        "request": {
+                          "_id": "6ac6503a53d954574f151762",
+                          "bloodGroup": "A+",
+                          "status": "closed",
+                          "quantity": 2,
+                          "pricePerPint": 0,
+                          "requiredDonors": 1,
+                          "type": "voluntary",
+                          "facility": "6ac61236e71c125a07d3b1b7"
+                        },
+                        "user": {
+                          "_id": "6abf49669ce610e06ce30e54",
+                          "firstName": "Firstname",
+                          "lastName": "Lastname",
+                          "email": "newuser@localhost.com",
+                          "otherNames": null,
+                          "id": "6abf49669ce610e06ce30e54"
+                        },
+                        "status": "pending",
+                        "createdAt": "2026-10-08T06:21:27.230Z",
+                        "updatedAt": "2026-10-08T06:21:27.230Z",
+                        "__v": 0
+                      }
+                    ],
+                    "meta": {
+                      "currentPage": 1,
+                      "perPage": 12,
+                      "skip": 0,
+                      "lastPage": 1,
+                      "nextPage": null,
+                      "prevPage": null,
+                      "from": 1,
+                      "to": 1
+                    }
+                  },
+                  "message": "Request made"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Request Submissions / Donations"
+        ]
+      }
+    },
+    "/request-submission/submission/{submissionId}": {
+      "get": {
+        "operationId": "RequestSubmissionController_getSubmissionById",
+        "parameters": [
+          {
+            "name": "submissionId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "required": true,
+            "in": "query",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 200,
+                  "data": {
+                    "_id": "6ac736676a9a609dcd9c1ccc",
+                    "request": {
+                      "_id": "6ac6503a53d954574f151762",
+                      "bloodGroup": "A+",
+                      "status": "closed",
+                      "quantity": 2,
+                      "pricePerPint": 0,
+                      "requiredDonors": 1,
+                      "type": "voluntary",
+                      "facility": "6ac61236e71c125a07d3b1b7"
+                    },
+                    "user": {
+                      "_id": "6abf49669ce610e06ce30e54",
+                      "firstName": "Firstname",
+                      "lastName": "Lastname",
+                      "email": "newuser@localhost.com"
+                    }
+                  },
+                  "message": "Request made"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Request Submissions / Donations"
+        ]
+      }
+    },
+    "/request-submission/submission/{submissionId}/status": {
+      "patch": {
+        "operationId": "RequestSubmissionController_updateSubmissionStatus",
+        "parameters": [
+          {
+            "name": "submissionId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "required": true,
+            "in": "query",
+            "schema": {}
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "pending",
+                      "accepted",
+                      "rejected"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Request Submissions / Donations",
+          "Update Submission Status - pending/accepted/rejected"
+        ]
+      }
+    },
+    "/request-submission/submission/{submissionId}/payment": {
+      "post": {
+        "operationId": "RequestSubmissionController_makePayment",
+        "parameters": [
+          {
+            "name": "submissionId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "required": true,
+            "in": "query",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "checkoutUrl": "<checkout_url>"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Request Submissions / Donations"
+        ]
+      }
+    },
+    "/webhook": {
+      "post": {
+        "operationId": "WebhookController_handleWebhook",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Webhook"
+        ]
+      }
+    },
+    "/donor/payouts": {
+      "post": {
+        "operationId": "PayoutController_submitPayout",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "in": "query",
+            "description": "JWT token for authentication",
+            "schema": {}
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Payout request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "amount": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "amount"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Donor Payout"
+        ]
+      },
+      "get": {
+        "operationId": "PayoutController_getPayouts",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Number of items per page for pagination",
+            "schema": {}
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number for pagination",
+            "schema": {}
+          },
+          {
+            "name": "token",
+            "required": true,
+            "in": "query",
+            "description": "JWT token for authentication",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 200,
+                  "data": {
+                    "data": [
+                      {
+                        "_id": "6ac8809db33a29dfb874e789",
+                        "amount": "₦2,000.00",
+                        "status": "pending",
+                        "createdAt": "09/10/2026, 06:50:21"
+                      }
+                    ],
+                    "meta": {
+                      "currentPage": 1,
+                      "perPage": 12,
+                      "skip": 0,
+                      "lastPage": 1,
+                      "nextPage": null,
+                      "prevPage": null,
+                      "from": 1,
+                      "to": 1
+                    }
+                  },
+                  "message": "Request made"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Donor Payout"
+        ]
+      }
+    },
+    "/donor/payouts/{payoutId}": {
+      "get": {
+        "operationId": "PayoutController_getPayout",
+        "parameters": [
+          {
+            "name": "payoutId",
+            "required": true,
+            "in": "path",
+            "description": "ID of the payout to retrieve",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "required": true,
+            "in": "query",
+            "description": "JWT token for authentication",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 200,
+                  "data": {
+                    "_id": "6ac8809db33a29dfb874e789",
+                    "user": {
+                      "_id": "6abf49669ce610e06ce30e54",
+                      "firstName": "Firstname",
+                      "lastName": "Lastname",
+                      "email": "yoyefok201@meinvr.com",
+                      "phone": "00000000000",
+                      "id": "6abf49669ce610e06ce30e54"
+                    },
+                    "amount": 2000,
+                    "status": "pending",
+                    "createdAt": "2026-10-09T05:50:21.526Z"
+                  },
+                  "message": "Request made"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Donor Payout"
+        ]
+      }
+    },
+    "/donor/payouts/account-details": {
+      "put": {
+        "operationId": "PayoutController_updateAccountDetails",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "in": "query",
+            "description": "JWT token for authentication",
+            "schema": {}
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Account details to update",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "accountName": {
+                    "type": "string"
+                  },
+                  "accountNumber": {
+                    "type": "string"
+                  },
+                  "bankName": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "accountName",
+                  "accountNumber",
+                  "bankName"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 200,
+                  "data": {
+                    "accountName": "string",
+                    "accountNumber": "string",
+                    "bankName": "string"
+                  },
+                  "message": "Request made"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Donor Payout"
+        ]
+      },
+      "get": {
+        "operationId": "PayoutController_getAccountDetails",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "in": "query",
+            "description": "JWT token for authentication",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 200,
+                  "data": {
+                    "accountName": "string",
+                    "accountNumber": "string",
+                    "bankName": "string"
+                  },
+                  "message": "Request made"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Donor Payout"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "BloodBridge API",
+    "description": "BloodBridge helps verified donors, hospitals, and blood banks respond to critical blood needs quickly, safely, and efficiently. Our direct coordination pipeline reduces delays in medical emergencies.",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "JWT": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http",
+        "in": "header",
+        "name": "Authorization"
+      }
+    },
+    "schemas": {}
+  }
+}

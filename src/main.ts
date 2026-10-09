@@ -5,6 +5,7 @@ import * as dotenv from "dotenv";
 import { join } from "path";
 import { AppModule } from "./app.module";
 import { initializeMongooseConnection } from "./mongoose/db";
+import { writeFileSync } from "fs";
 
 dotenv.config();
 
@@ -37,6 +38,12 @@ async function bootstrap() {
     )
     .build();
   const document = SwaggerModule.createDocument(app, config);
+
+  // Write the spec to a file
+  writeFileSync(
+    join(process.cwd(), "openapi.json"),
+    JSON.stringify(document, null, 2),
+  );
   SwaggerModule.setup("docs", app, document, {
     swaggerOptions: {
       persistAuthorization: true,

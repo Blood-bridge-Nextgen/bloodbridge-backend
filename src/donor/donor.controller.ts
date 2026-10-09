@@ -182,6 +182,11 @@ export class DonorController {
     description: "Longitude of the location to search for facilities",
     example: 10,
   })
+  @ApiQuery({
+    name: "address",
+    description: "Address of the location to search for facilities",
+    example: "123 Main Street",
+  })
   @ApiOkResponse({
     example: {
       code: 200,

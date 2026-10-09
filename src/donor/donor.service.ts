@@ -98,6 +98,15 @@ export class DonorService {
 
     const lat = parseFloat(query.lat);
     const lng = parseFloat(query.lng);
+    const address = query.address;
+    const addressFilter = address?.trim()
+      ? {
+          address: {
+            $regex: address.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+            $options: "i",
+          },
+        }
+      : {};
     // Within 100km radius
     const radius = 100 / 6378.1; // 100km in radians
 
@@ -107,6 +116,7 @@ export class DonorService {
           role: "facility",
           "location.lat": { $exists: true },
           "location.lng": { $exists: true },
+          ...addressFilter,
         },
       },
       {
@@ -154,6 +164,7 @@ export class DonorService {
       role: "facility",
       "location.lat": { $exists: true },
       "location.lng": { $exists: true },
+      ...addressFilter,
       $expr: {
         $lte: [
           {
