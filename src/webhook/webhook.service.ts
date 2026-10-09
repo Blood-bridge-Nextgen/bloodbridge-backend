@@ -8,7 +8,11 @@ import crypto from "crypto";
 import * as dotenv from "dotenv";
 import { httpResponse } from "../lib/utils";
 import { MailService } from "../mail/mail.service";
-import { Transaction, Wallet } from "../mongoose/mongoose.schema";
+import {
+  RequestSubmission,
+  Transaction,
+  Wallet,
+} from "../mongoose/mongoose.schema";
 
 dotenv.config();
 
@@ -90,6 +94,15 @@ export class WebhookService {
 
       wallet.balance += transaction.amount;
       await wallet.save();
+
+      const requestSubmission = await RequestSubmission.findById(
+        transaction?.requestSubmission?._id,
+      );
+      if (requestSubmission) {
+        requestSubmission.status = "paid";
+        await requestSubmission.save();
+      }
+
       await this.mail.sendTransactionCompletedEmail(transaction, wallet);
     }
 
