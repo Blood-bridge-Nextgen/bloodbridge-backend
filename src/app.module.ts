@@ -12,6 +12,7 @@ import { DonorModule } from './donor/donor.module';
 import { BachsService } from './bachs/bachs.service';
 import { RequestSubmissionModule } from './request-submission/request-submission.module';
 import { WebhookModule } from './webhook/webhook.module';
+import { PayoutModule } from './payout/payout.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { WebhookModule } from './webhook/webhook.module';
     DonorModule,
     RequestSubmissionModule,
     WebhookModule,
+    PayoutModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailService, BachsService],

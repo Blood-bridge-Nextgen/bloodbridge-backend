@@ -109,6 +109,18 @@ UserSchema.virtual("oneTimePasswords", {
   localField: "_id",
   foreignField: "user",
 });
+UserSchema.virtual("wallet", {
+  ref: "Wallet",
+  localField: "_id",
+  foreignField: "user",
+  justOne: true,
+});
+UserSchema.virtual("accountDetails", {
+  ref: "AccountDetails",
+  localField: "_id",
+  foreignField: "user",
+  justOne: true,
+});
 
 const DonorDetailsSchema = new Schema(
   {
@@ -349,7 +361,60 @@ TransactionSchema.index(
   { unique: true },
   // { unique: true, sparse: true },
 );
+const AccountDetailsSchema = new Schema(
+  {
+    accountName: {
+      type: String,
+      required: true,
+    },
+    accountNumber: {
+      type: String,
+      required: true,
+    },
+    bankName: {
+      type: String,
+      required: true,
+    },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      unique: true,
+    },
+  },
+  {
+    timestamps: true,
+  },
+);
 
+const PayoutSchema = new Schema(
+  {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    amount: {
+      type: Number,
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: ["pending", "completed", "rejected"],
+      default: "pending",
+    },
+    failedReason: {
+      type: String,
+      default: null,
+    },
+  },
+  {
+    timestamps: true,
+  },
+);
+
+export const Payout = model("Payout", PayoutSchema);
+export const AccountDetails = model("AccountDetails", AccountDetailsSchema);
 export const FacilityDetails = model("FacilityDetails", FacilityDetailsSchema);
 export const OneTimePassword = model("OneTimePassword", OneTimePasswordSchema);
 export const User = model("User", UserSchema);

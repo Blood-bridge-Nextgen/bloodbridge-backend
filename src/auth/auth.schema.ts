@@ -30,10 +30,26 @@ export const DonorSignUpSchema = z
     email: z.email("Invalid email"),
     phone: z.string().min(1, " is required"),
     address: z.string().min(1, " is required"),
-    dob: z.string().refine((value) => {
-      const date = new Date(value);
-      return !isNaN(date.getTime());
-    }, "Invalid date"),
+    dob: z
+      .string()
+      .refine((value) => {
+        const date = new Date(value);
+        return !isNaN(date.getTime());
+      }, "Invalid date")
+      // Check whether user is at least 18 years old
+      .refine((value) => {
+        const date = new Date(value);
+        const today = new Date();
+        const age = today.getFullYear() - date.getFullYear();
+        const monthDiff = today.getMonth() - date.getMonth();
+        if (
+          monthDiff < 0 ||
+          (monthDiff === 0 && today.getDate() < date.getDate())
+        ) {
+          return age - 1 >= 18;
+        }
+        return age >= 18;
+      }, "You must be at least 18 years old"),
     bloodGroup: z.enum(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"], {
       error: "Accepted values are A+, A-, B+, B-, AB+, AB-, O+, O-",
     }),
