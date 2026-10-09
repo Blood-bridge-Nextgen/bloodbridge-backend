@@ -25,6 +25,29 @@ import {
 export class DonorService {
   constructor() {}
 
+  async getOverview(user: any) {
+    const pendingSubmissionsCount = await RequestSubmission.countDocuments({
+      user: user._id,
+      status: "pending",
+    });
+    const acceptedSubmissionsCount = await RequestSubmission.countDocuments({
+      user: user._id,
+      status: "accepted",
+    });
+    const paidSubmissionsCount = await RequestSubmission.countDocuments({
+      user: user._id,
+      status: "paid",
+    });
+
+    return httpResponse({
+      data: {
+        pendingSubmissionsCount,
+        acceptedSubmissionsCount,
+        paidSubmissionsCount,
+      },
+    });
+  }
+
   async getDonorDetails(user: any) {
     const populatedUser = await user.populate({
       path: "donorDetails",

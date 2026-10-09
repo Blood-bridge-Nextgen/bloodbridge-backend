@@ -1,0 +1,1 @@
+1. Ensure facilities cannot accept more donors than the requiredDonors field

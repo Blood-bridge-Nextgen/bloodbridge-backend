@@ -42,6 +42,26 @@ import { DonorService } from "./donor.service";
 export class DonorController {
   constructor(private readonly donorService: DonorService) {}
 
+  @Get("overview")
+  @ApiQuery({
+    name: "token",
+    description: "JWT token for authentication",
+  })
+  @ApiOkResponse({
+    example: {
+      code: 200,
+      data: {
+        pendingSubmissionsCount: 0,
+        acceptedSubmissionsCount: 2,
+        paidSubmissionsCount: 0,
+      },
+      message: "Request made",
+    },
+  })
+  async getOverview(@Req() req: any) {
+    return await this.donorService.getOverview(req.user);
+  }
+
   @Get("profile")
   @ApiQuery({
     name: "token",
