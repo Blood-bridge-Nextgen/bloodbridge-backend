@@ -14,33 +14,39 @@ export class KycService {
   constructor(private readonly mail: MailService) {}
 
   async submitKyc(user: any, documentFile: any) {
-    if (user.profile?.kyc?.status === "verified") {
-      throw new BadRequestException("User is already verified");
+    try {
+      if (user.profile?.kyc?.status === "verified") {
+        throw new BadRequestException("User is already verified");
+      }
+
+      if (!documentFile) {
+        throw new BadRequestException("Document file is required");
+      }
+
+      const documentPath = this.saveKycFile(
+        "documents",
+        user._id,
+        documentFile,
+        "document",
+      );
+
+      if (!documentPath) {
+        throw new InternalServerErrorException("Failed to save document file");
+      }
+
+      await KycVerification.create({
+        user: user._id,
+        document: documentPath,
+      });
+
+      return httpResponse({
+        message: "KYC submitted successfully. Awaiting verification.",
+      });
+    } catch (err: any) {
+      throw new InternalServerErrorException(
+        err.message || "Failed to submit KYC",
+      );
     }
-
-    if (!documentFile) {
-      throw new BadRequestException("Document file is required");
-    }
-
-    const documentPath = this.saveKycFile(
-      "documents",
-      user._id,
-      documentFile,
-      "document",
-    );
-
-    if (!documentPath) {
-      throw new InternalServerErrorException("Failed to save document file");
-    }
-
-    await KycVerification.create({
-      user: user._id,
-      document: documentPath,
-    });
-
-    return httpResponse({
-      message: "KYC submitted successfully. Awaiting verification.",
-    });
   }
 
   private saveKycFile(
