@@ -238,14 +238,19 @@ export class DonorService {
   async getRequests(query: any, user: any) {
     const page = parseInt(query.page, 10) || 1;
     const limit = parseInt(query.limit, 10) || 10;
+    const facilityId = query.facilityId;
     const status = query.status;
     const skip = (page - 1) * limit;
     const donorDetails = await DonorDetails.findOne({ user: user._id });
     const bloodGroup = donorDetails?.bloodGroup;
 
-    const requests = await DonationRequest.find({
-      ...(status ? { status, bloodGroup } : { bloodGroup }),
-    })
+    const q = {
+      bloodGroup,
+      ...(status ? { status } : {}),
+      ...(facilityId ? { facility: facilityId } : {}),
+    };
+
+    const requests = await DonationRequest.find(q)
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
