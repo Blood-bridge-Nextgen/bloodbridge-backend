@@ -307,7 +307,7 @@ export class DonorController {
     },
   })
   async getRequests(@Req() req: any) {
-    return await this.donorService.getRequests(req.query);
+    return await this.donorService.getRequests(req.query, req.user);
   }
 
   @Post("requests/:requestId/respond")
