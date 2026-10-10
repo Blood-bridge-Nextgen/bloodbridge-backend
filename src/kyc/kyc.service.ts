@@ -3,15 +3,20 @@ import {
   Injectable,
   InternalServerErrorException,
 } from "@nestjs/common";
-import * as fs from "fs";
-import * as path from "path";
+import { v2 as cloudinary } from "cloudinary";
 import { httpResponse } from "../lib/utils";
 import { MailService } from "../mail/mail.service";
 import { KycVerification } from "../mongoose/mongoose.schema";
 
 @Injectable()
 export class KycService {
-  constructor(private readonly mail: MailService) {}
+  constructor(private readonly mail: MailService) {
+    cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+    });
+  }
 
   async submitKyc(user: any, documentFile: any) {
     try {
@@ -23,7 +28,7 @@ export class KycService {
         throw new BadRequestException("Document file is required");
       }
 
-      const documentPath = this.saveKycFile(
+      const documentPath = await this.saveKycFile(
         "documents",
         user._id,
         documentFile,
@@ -49,19 +54,40 @@ export class KycService {
     }
   }
 
-  private saveKycFile(
+  private async saveKycFile(
     subdir: string,
     userId: string,
     file: any,
     suffix: string,
-  ): string | null {
+  ) {
     if (!file?.buffer) return null;
-    const ext = path.extname(file.originalname) || ".jpg";
-    const dir = path.join(process.cwd(), "uploads", "kyc", subdir);
-    fs.mkdirSync(dir, { recursive: true });
-    const filename = `${userId}-${suffix}-${Date.now()}${ext}`;
-    const filepath = path.join(dir, filename);
-    fs.writeFileSync(filepath, file.buffer);
-    return `/uploads/kyc/${subdir}/${filename}`;
+
+    const result = await new Promise<{ secure_url: string }>(
+      (resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          {
+            folder: `kyc/${subdir}`,
+            public_id: `${userId}-${suffix}-${Date.now()}`,
+          },
+          (error, uploadResult) => {
+            if (error) {
+              reject(error);
+              return;
+            }
+
+            if (!uploadResult?.secure_url) {
+              reject(new Error("Cloudinary upload returned no secure URL"));
+              return;
+            }
+
+            resolve({ secure_url: uploadResult.secure_url });
+          },
+        );
+
+        uploadStream.end(file.buffer);
+      },
+    );
+
+    return result.secure_url;
   }
 }

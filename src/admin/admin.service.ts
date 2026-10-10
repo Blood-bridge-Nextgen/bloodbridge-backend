@@ -80,7 +80,14 @@ export class AdminService {
   ) {
     const item = await KycVerification.findByIdAndUpdate(
       kycId,
-      { status: body.status },
+      {
+        status: body.status,
+        ...(body.status === "verified"
+          ? {}
+          : {
+              document: null,
+            }),
+      },
       { new: true },
     ).populate({
       path: "user",
