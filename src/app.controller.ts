@@ -3,7 +3,6 @@ import { ApiTags } from "@nestjs/swagger";
 import { AppService } from "./app.service";
 
 @ApiTags("Health")
-
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
@@ -11,5 +10,9 @@ export class AppController {
   @Get("health")
   healthCheck() {
     return this.appService.healthCheck();
+  }
+  @Post("seed-database")
+  seedDatabase() {
+    return this.appService.seedDatabase();
   }
 }

@@ -7,7 +7,6 @@ import {
 import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from "bcryptjs";
 import * as dotenv from "dotenv";
-import { BachsService } from "../bachs/bachs.service";
 import { httpResponse, MONGOOSE_ERROR_CODES } from "../lib/utils";
 import { MailService } from "../mail/mail.service";
 import {
