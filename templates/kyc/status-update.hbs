@@ -1,0 +1,79 @@
+<html>
+  <head>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .header {
+        background-color: #0060eb;
+        color: white;
+        padding: 20px;
+        text-align: center;
+        border-radius: 8px 8px 0 0;
+      }
+      .content {
+        padding: 20px;
+        background-color: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 0 0 8px 8px;
+      }
+      .button {
+        display: inline-block;
+        background-color: #0060eb;
+        color: #ffffff !important;
+        text-decoration: none;
+        padding: 12px 24px;
+        border-radius: 6px;
+        font-weight: bold;
+        margin: 16px 0;
+      }
+      .footer {
+        margin-top: 20px;
+        color: #6b7280;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Your KYC Has Been Updated To {{status}}</h1>
+      </div>
+      <div class="content">
+        <p>Hi {{organizationName}},</p>
+        <p>
+          You submitted a KYC verification request. Please find the updated
+          details below:
+        </p>
+        <ul>
+          <li><strong>Status:</strong> {{status}}</li>
+          <li><strong>Date:</strong> {{createdAt}}</li>
+          {{#if rejectionReason}}
+            <li><strong>Rejection Reason:</strong> {{rejectionReason}}</li>
+          {{/if}}
+        </ul>
+        <p>
+          Your KYC status has been updated to
+          <strong>{{status}}</strong>. Please log in to your account to view the
+          details of your request.
+        </p>
+
+        <p>If you have any questions or need assistance, please
+          <a
+            style="text-decoration: underline;"
+            href="mailto:support@bloodbridge.com"
+          >contact the BloodBridge support team</a>.</p>
+      </div>
+      <div class="footer">
+        <b>BloodBridge Administration</b>
+      </div>
+    </div>
+  </body>
+</html>

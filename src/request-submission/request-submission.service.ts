@@ -51,6 +51,16 @@ export class RequestSubmissionService {
           lastName: 1,
           email: 1,
           otherNames: 1,
+          phone: 1,
+          dob: 1,
+          address: 1,
+        },
+        populate: {
+          path: "donorDetails",
+          select: {
+            bloodGroup: 1,
+            status: 1,
+          },
         },
       })
       .populate({
@@ -90,6 +100,16 @@ export class RequestSubmissionService {
           lastName: 1,
           email: 1,
           otherNames: 1,
+          phone: 1,
+          dob: 1,
+          address: 1,
+        },
+        populate: {
+          path: "donorDetails",
+          select: {
+            bloodGroup: 1,
+            status: 1,
+          },
         },
       })
       .populate({

@@ -19,6 +19,8 @@ type RequestResourceType = {
   quantity: number;
   requiredDonors: number;
   type: "voluntary" | "paid" | null | undefined;
+  status: "open" | "closed";
+  pricePerPint: number;
 };
 
 export type RequestData = {
@@ -27,6 +29,8 @@ export type RequestData = {
   quantity: number;
   requiredDonors: number;
   type: "voluntary" | "paid" | null | undefined;
+  status: "open" | "closed";
+  pricePerPint: number;
 };
 
 type Facility = {
@@ -90,6 +94,8 @@ export class DonationRequestResource implements ResourceInterface<RequestResourc
       quantity: src.quantity,
       requiredDonors: src.requiredDonors,
       type: src.type,
+      status: src.status,
+      pricePerPint: src.pricePerPint,
     };
   }
 }

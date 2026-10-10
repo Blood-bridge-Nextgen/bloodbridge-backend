@@ -14,6 +14,8 @@ import { RequestSubmissionModule } from './request-submission/request-submission
 import { WebhookModule } from './webhook/webhook.module';
 import { PayoutModule } from './payout/payout.module';
 import { WalletModule } from './wallet/wallet.module';
+import { KycModule } from './kyc/kyc.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -38,6 +40,8 @@ import { WalletModule } from './wallet/wallet.module';
     WebhookModule,
     PayoutModule,
     WalletModule,
+    KycModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailService, BachsService],

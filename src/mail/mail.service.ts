@@ -22,6 +22,28 @@ export class MailService {
     });
   }
 
+  async sendKycUpdateEmail(kyc: any, rejectionReason?: string | null) {
+    const template = this.getTemplatePath("./kyc/status-update");
+    const html = template({
+      organizationName: kyc.user.organizationName,
+      status: kyc.status,
+      createdAt: kyc.createdAt.toLocaleString(),
+      rejectionReason: rejectionReason || null,
+    });
+
+    const subject =
+      kyc.status === "verified"
+        ? "KYC Verification Approved"
+        : "KYC Verification Update";
+
+    await this.transporter.sendMail({
+      from: process.env.MAIL_FROM,
+      to: kyc.user.email,
+      subject,
+      html,
+    });
+  }
+
   async sendTransactionCompletedEmail(transaction: any, wallet: any) {
     const template = this.getTemplatePath("./transaction/completed");
     const html = template({
